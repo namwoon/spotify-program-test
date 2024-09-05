@@ -52,13 +52,22 @@ def get_songs_by_artist(token, artist_id):
     json_result = json.loads(result.content)["tracks"]
     return json_result
 
-def get_top_albums(token, artist_id):
-    url = f""
+def get_top_album(token, artist_id):
+    songs = get_songs_by_artist(token, artist_id)
+    albumid = songs[0]["album"]["id"]
+    url = f"https://api.spotify.com/v1/albums/{albumid}"
+    headers = get_auth_header(token)
+    result = get(url, headers=headers)
+    json_result = json.loads(result.content)["images"][1]
     return json_result
+
+
 token = get_token()
 result = search_for_artist(token, "Laufey")
 artist_id = result["id"]
 songs = get_songs_by_artist(token, artist_id)
 
 for idx, song in enumerate(songs):
-    print(f"{idx + 1}.{song['name']}")
+    print(f"{idx + 1}.{song['album']['name']}")
+
+print(get_top_album(token,artist_id))
