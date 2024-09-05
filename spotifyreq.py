@@ -1,16 +1,20 @@
+#handling spotify api requests
 from dotenv import load_dotenv
 import os
 import base64
+import requests
 from requests import post, get
 import json
+
 #dotenv a pip module that allows interactivity with apis
 #load loads in the environemtn variables from the .env file also within the folder
+from PIL import Image
 load_dotenv() 
 
 client_id = os.getenv("CLIENT_ID")
 client_secret = os.getenv("CLIENT_SECRET")
 
-print(client_id, client_secret)
+
 
 def get_token():
     auth_string = client_id + ":" + client_secret
@@ -58,12 +62,38 @@ def get_top_album(token, artist_id):
     url = f"https://api.spotify.com/v1/albums/{albumid}"
     headers = get_auth_header(token)
     result = get(url, headers=headers)
-    json_result = json.loads(result.content)["images"][1]
+    json_result = json.loads(result.content)["images"][1]["url"]
     return json_result
 
 
+#All spotify related defs above, below are image to ascii
+
+def imagetoascii(url): 
+    #getting image url from get otp album and then downloading it
+    filename = "albumcover.webp"
+    response = requests.get(url)
+    with open(filename, "wb") as f:
+        f.write(response.content)
+    print(f"Image saved as {filename}")
+    image = Image.open(filename)
+    width = 120;
+    image = image.resize((120, 45))
+    image = image.convert('L')
+    chars = ["@", "J", "D", "%", "*", "P", "+", "Y", "$", ",", "."]
+    px = image.getdata()
+    new_pixels = [chars[pixel//25] for pixel in px]
+    new_pixels = ''.join(new_pixels)
+    new_pixels_count = len(new_pixels)
+    ascii_image = [new_pixels[index:index + width] for index in range(0, new_pixels_count, width)]
+    ascii_image = "\n".join(ascii_image)
+ 
+    with open("ascii_image.txt", "w") as f:
+        f.write(ascii_image)
+
+
+
 token = get_token()
-result = search_for_artist(token, "Laufey")
+result = search_for_artist(token, "Taylor Swift")
 artist_id = result["id"]
 songs = get_songs_by_artist(token, artist_id)
 
@@ -71,3 +101,4 @@ for idx, song in enumerate(songs):
     print(f"{idx + 1}.{song['album']['name']}")
 
 print(get_top_album(token,artist_id))
+imagetoascii(get_top_album(token, artist_id))
