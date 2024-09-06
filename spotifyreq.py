@@ -1,3 +1,5 @@
+#Nam Pham, 9/5/2024
+
 #handling spotify api requests
 from dotenv import load_dotenv
 import os
@@ -124,3 +126,5 @@ while(x > 0):
         artist_chosenflag = False
     if int(value) == -1:
         x = -1
+
+print("Thank you!")
