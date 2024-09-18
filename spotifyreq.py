@@ -27,9 +27,12 @@ while(x > 0):
          print(f"{idx + 1}.{song['name']}")
     if int(value) == 2:
         print("\nTheir top album is: " + get_top_album(token,artist_id)["name"])
+
     if int(value) == 3:
-        imagetoascii(get_top_album(token, artist_id)["images"][1]["url"])
-        print("\nASCII image of their top album cover has been generated!\n")
+        a = input("Type 1 for Artist Image, or 2 for top album image: ")
+        imagetoascii(getImage(token, artist_id, int(a)))
+        print("\nASCII image has been generated!\n")
+
     if int(value) == 4:
         artist_chosenflag = False
     if int(value) == -1:

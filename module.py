@@ -66,11 +66,29 @@ def get_top_album(token, artist_id):
     json_result = json.loads(result.content)
     return json_result
 
+def get_artist(token, artist_id):
+    url = f"https://api.spotify.com/v1/artists/{artist_id}"
+    headers = get_auth_header(token)
+    result = get(url, headers=headers)
+    json_result = json.loads(result.content)
+    return json_result
+
+def getImage(token, artist_id, num):
+
+    if (num == 2):
+        result = get_top_album(token, artist_id)["images"][1]["url"]
+
+    else:
+        result = get_artist(token, artist_id)["images"][1]["url"]
+
+    return result
+
 
 #All spotify related defs above, below are image to ascii
+#getting image url from get otp album and then downloading it
 
 def imagetoascii(url): 
-    #getting image url from get otp album and then downloading it
+    
     filename = "albumcover.webp"
     response = requests.get(url)
     with open(filename, "wb") as f:
