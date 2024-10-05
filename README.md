@@ -17,4 +17,14 @@
          After retrieving your Client ID and client secret, create a new folder and put the spotifyreq.py program into it
          Additionally, you will need to create a ".env" file within this folder to store your environment variables (Client ID and Client Secret)
               Within this .env file, make two string variables called "CLIENT_SECRET" and "CLIENT_ID"
-         After setting up your environment variables and saving, the program should be ready to run!
+         After setting up your environment variables and saving, the program is almost ready to run.
+          You'll notice that if you try to run the program (spotifyreq.py), it will say that some packages, namely dotenv, PIL (pillow), and requests
+            The method of installing each package will vary based on system, generally you can use:
+```
+pip install python-dotenv
+pip install requests
+pip install pillow
+```
+#### Almost there:
+    Now, download module.py and spotifyreq.py and running spotifyreq should allow you to interact with the program
+
